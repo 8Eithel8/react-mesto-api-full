@@ -1,0 +1,6 @@
+.auth-form__fields {
+    height: 93px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}

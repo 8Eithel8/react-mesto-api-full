@@ -1,0 +1,17 @@
+.profile__button_type_edit {
+  width: 24px;
+  height: 24px;
+  background-image: url('../../../../images/pen.svg');
+  justify-self: start;
+  margin-top: 10px;
+  padding: 0;
+}
+
+
+@media (max-width: 767px) {
+  .profile__button_type_edit {
+    width: 18px;
+    height: 18px;
+    margin-top: 8px;
+  }
+} 

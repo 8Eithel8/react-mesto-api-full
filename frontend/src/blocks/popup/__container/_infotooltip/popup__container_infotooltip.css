@@ -1,0 +1,5 @@
+.popup__container_infotooltip {
+    min-height: 260px;
+    box-sizing: border-box;
+    padding: 60px 36px;
+}

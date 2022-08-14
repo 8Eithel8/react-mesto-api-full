@@ -1,0 +1,9 @@
+.auth-form__field {
+    width: 98.5%;
+    height: 32px;
+    border: none;
+    border-bottom: 2px solid #CCCCCC;
+    background-color: transparent;
+    color: #CCCCCC;
+
+}

@@ -1,0 +1,23 @@
+.card__like {
+  width: 22px;
+  height: 19px;
+  background-image: url('../../../images/like.svg');
+  background-repeat: no-repeat;
+  align-self: center;
+  border: none;
+  background-color: transparent;
+}
+
+.card__like:hover {
+  opacity: .5;
+  cursor: pointer;
+  transition: opacity .3s ease;
+}
+
+.card__like:active {
+  width: 22px;
+  height: 19px;
+  background-image: url('../../../images/like-active.svg');
+  background-repeat: no-repeat;
+  opacity: 1;
+}

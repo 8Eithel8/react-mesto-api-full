@@ -1,0 +1,12 @@
+.registration {
+    max-width: 358px;
+    margin: 53px auto 0 auto;
+}
+
+@media (max-width: 767px) {
+    .registration {
+        max-width: 260px;
+        margin: 40px auto 0 auto;
+
+    }
+}
