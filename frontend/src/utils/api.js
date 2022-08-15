@@ -17,7 +17,7 @@
     getInitialCards() {
         return fetch(`${this._baseUrl}/cards`, {
             method: 'GET',
-            headers: this._headers
+            headers: this._headers()
         })
             .then(this._checkRes)
     }
@@ -26,7 +26,7 @@
     updateAvatar({avatar}) {
         return fetch(`${this._baseUrl}/users/me/avatar`, {
             method: 'PATCH',
-            headers: this._headers,
+            headers: this._headers(),
             body: JSON.stringify({
                 avatar
             })
@@ -38,7 +38,7 @@
     getUserInfo() {
         return fetch(`${this._baseUrl}/users/me`, {
             method: 'GET',
-            headers: this._headers
+            headers: this._headers()
         })
             .then(this._checkRes)
     }
@@ -47,7 +47,7 @@
     editUserInfo({name, about}) {
         return fetch(`${this._baseUrl}/users/me`, {
             method: 'PATCH',
-            headers: this._headers,
+            headers: this._headers(),
             body: JSON.stringify({
                 name,
                 about
@@ -60,7 +60,7 @@
     postNewCard({name, link}) {
         return fetch(`${this._baseUrl}/cards`, {
             method: 'POST',
-            headers: this._headers,
+            headers: this._headers(),
             body: JSON.stringify({
                 name,
                 link
@@ -73,7 +73,7 @@
     removeCard(id) {
         return fetch(`${this._baseUrl}/cards/${id}`, {
             method: 'DELETE',
-            headers: this._headers
+            headers: this._headers()
         })
             .then(this._checkRes)
     }
@@ -82,18 +82,18 @@
         const method = isLiked ? 'DELETE' : 'PUT'
          return fetch(`${this._baseUrl}/cards/${id}/likes`, {
              method: method,
-             headers: this._headers
+             headers: this._headers()
          })
              .then(this._checkRes)
      }
 }
 
 export const api = new Api({
-    baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-41',
-    headers: {
-        authorization: '25211fd8-3e01-4ad9-a1d8-b38f3a1a11d7',
+    baseUrl: 'http://localhost:3001',
+    headers: () => ({
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
         'Content-Type': 'application/json'
-    }
+    })
 });
 
 

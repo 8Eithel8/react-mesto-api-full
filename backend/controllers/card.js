@@ -13,7 +13,7 @@ const forbidden = 'Действие запрещено';
 module.exports.getCards = (req, res, next) => {
   Card.find({})
     .populate('owner')
-    .then((cards) => res.send({ data: cards }))
+    .then((cards) => res.send(cards))
     .catch(() => next(new InternalSeverError(serverError)));
 };
 
@@ -23,7 +23,7 @@ module.exports.createCard = (req, res, next) => {
   const owner = req.user._id; // достанем  ID
 
   Card.create({ name, owner, link })
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError(cardInvalidData));
@@ -64,7 +64,7 @@ module.exports.likeCard = (req, res, next) => {
     { new: true },
   )
     .orFail()
-    .then((like) => res.send({ like }))
+    .then((card) => res.send(card))
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError(cardNonexistentId));
@@ -86,7 +86,7 @@ module.exports.dislikeCard = (req, res, next) => {
     { new: true },
   )
     .orFail()
-    .then((dislike) => res.send({ dislike }))
+    .then((card) => res.send(card))
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError(cardNonexistentId));

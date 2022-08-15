@@ -35,15 +35,17 @@ function App() {
     const history = useHistory()
 
     useEffect(() => {
-        Promise.all([api.getInitialCards(), api.getUserInfo()])
-            .then(([cards, userInfo]) => {
-                setCards(cards);
-                setCurrentUser(userInfo);
-            })
-            .catch(
-                (err) => console.log('Error: ', err)
-            );
-    }, [])
+        if (loggedIn) {
+            Promise.all([api.getInitialCards(), api.getUserInfo()])
+                .then(([cards, userInfo]) => {
+                    setCards(cards);
+                    setCurrentUser(userInfo);
+                })
+                .catch(
+                    (err) => console.log('Error: ', err)
+                );
+        }
+    }, [loggedIn])
 
     function handleCardLike(card, isLiked) {
 
@@ -144,7 +146,7 @@ function App() {
                 if (res){
                     // авторизуем пользователя
                     setLoggedIn(true);
-                    setUserLogin(res.data.email);
+                    setUserLogin(res.email);
                     history.push('/');
                 }
             });
@@ -161,7 +163,6 @@ function App() {
     function onSignIn(email, password) {
         auth.authorize(email, password)
             .then((data) => {
-                console.log(data)
                 if (data.token){
                     localStorage.setItem('jwt', data.token);
                     setLoggedIn(true);
@@ -179,7 +180,7 @@ function App() {
     // регистрация пользователя
     function onSignUp(email, password){
         auth.register(email, password).then((res) => {
-            if(res.data){
+            if(res){
                 setInfoToolImage(iconReg);
                 setInfoToolMessage('Вы успешно зарегистрировались!');
                 setIsInfoToolTipOpen(true);
