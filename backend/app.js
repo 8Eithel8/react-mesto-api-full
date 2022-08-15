@@ -22,6 +22,8 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
+app.use(require('./middlewares/cors'));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
