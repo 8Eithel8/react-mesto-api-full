@@ -12,7 +12,6 @@ const forbidden = 'Действие запрещено';
 // получаем все карточки
 module.exports.getCards = (req, res, next) => {
   Card.find({})
-    .populate('owner')
     .then((cards) => res.send(cards))
     .catch(() => next(new InternalSeverError(serverError)));
 };
