@@ -34,19 +34,6 @@ function App() {
 
     const history = useHistory()
 
-    useEffect(() => {
-        if (loggedIn) {
-            Promise.all([api.getInitialCards(), api.getUserInfo()])
-                .then(([cards, userInfo]) => {
-                    setCards(cards);
-                    setCurrentUser(userInfo);
-                })
-                .catch(
-                    (err) => console.log('Error: ', err)
-                );
-        }
-    }, [loggedIn])
-
     function handleCardLike(card, isLiked) {
 
         // Отправляем запрос в API и получаем обновлённые данные карточки
@@ -149,12 +136,26 @@ function App() {
                     setUserLogin(res.email);
                     history.push('/');
                 }
-            });
+                else {
+                    setLoggedIn(false);
+                    setUserLogin('');
+                }
+            }).catch(
+                (err) => console.log('Error: ', err)
+            );
         }
     }, [])
 
     useEffect(() => {
         if (loggedIn === true) {
+            Promise.all([api.getInitialCards(), api.getUserInfo()])
+                .then(([cards, userInfo]) => {
+                    setCards(cards);
+                    setCurrentUser(userInfo);
+                })
+                .catch(
+                    (err) => console.log('Error: ', err)
+                );
             history.push('/');
         }
     }, [loggedIn, history])
@@ -163,34 +164,30 @@ function App() {
     function onSignIn(email, password) {
         auth.authorize(email, password)
             .then((data) => {
-                if (data.token){
                     localStorage.setItem('jwt', data.token);
                     setLoggedIn(true);
                     setUserLogin(email);
                     history.push('/');
-                }  else {
-                    setInfoToolImage(iconErr);
-                    setInfoToolMessage('Что-то пошло не так! Попробуйте ещё раз.');
-                    setIsInfoToolTipOpen(true);
                 }
-            })
-            .catch(err => console.log(err));
+            )
+            .catch(() => {
+                setInfoToolImage(iconErr);
+                setInfoToolMessage('Что-то пошло не так! Попробуйте ещё раз.');
+                setIsInfoToolTipOpen(true);
+            });
     }
 
     // регистрация пользователя
     function onSignUp(email, password){
         auth.register(email, password).then((res) => {
-            if(res){
-                setInfoToolImage(iconReg);
-                setInfoToolMessage('Вы успешно зарегистрировались!');
-                setIsInfoToolTipOpen(true);
-                history.push('/sign-in');
-
-            } else {
-                setInfoToolImage(iconErr);
-                setInfoToolMessage('Что-то пошло не так! Попробуйте ещё раз.');
-                setIsInfoToolTipOpen(true);
-            }
+            setInfoToolImage(iconReg);
+            setInfoToolMessage('Вы успешно зарегистрировались!');
+            setIsInfoToolTipOpen(true);
+            history.push('/sign-in');
+        }).catch(() => {
+            setInfoToolImage(iconErr);
+            setInfoToolMessage('Что-то пошло не так! Попробуйте ещё раз.');
+            setIsInfoToolTipOpen(true);
         });
     }
 

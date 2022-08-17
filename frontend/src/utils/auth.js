@@ -1,4 +1,11 @@
-export const BASE_URL = 'http://localhost:3001';
+export const BASE_URL = 'http://localhost:3000';
+
+function responseCheck(res) {
+    if (res.ok) {
+        return res.json();
+    }
+    return Promise.reject(res.status);
+}
 
 export const register = (email, password) => {
     return fetch(`${BASE_URL}/signup`, {
@@ -8,9 +15,7 @@ export const register = (email, password) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ email, password })
-    })
-        .then(res => res.json())
-        .catch((err) => console.log(err));
+    }).then(responseCheck);
 };
 
 export const authorize = (email, password) => {
@@ -21,9 +26,7 @@ export const authorize = (email, password) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ email, password })
-    })
-        .then(res => res.json())
-        .catch((err) => console.log(err));
+    }).then(responseCheck);
 };
 
 export const getData = (token) => {
@@ -35,7 +38,5 @@ export const getData = (token) => {
             'Authorization': `Bearer ${token}`,
         }
     })
-        .then(res => res.json())
-        .then(data => data)
-        .catch((err) => console.log(err));
+        .then(responseCheck);
 }
