@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -10,7 +11,9 @@ const NotFoundError = require('./errors/not-found-error');
 const { validateUser, validateLogin } = require('./middlewares/validators');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { PORT = 3001 } = process.env;
+const { mongoDbServer, port } = require('./utils/config');
+
+const { PORT = port, MONGO_DB_SERVER = mongoDbServer } = process.env;
 
 const app = express();
 
@@ -29,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
 
 mongoose.connect(
-  'mongodb://localhost:27017/mestodb',
+  MONGO_DB_SERVER,
   { useNewUrlParser: true },
 );
 
