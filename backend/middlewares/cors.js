@@ -1,4 +1,6 @@
 const allowedCors = [
+  'http://ulitina.mesto.nomoredomains.sbs',
+  'https://ulitina.mesto.nomoredomains.sbs',
   'localhost:3001',
   'http://localhost:3001',
 ];
