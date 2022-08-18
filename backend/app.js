@@ -38,6 +38,12 @@ mongoose.connect(
 
 app.use(requestLogger); // подключаем логгер ошибок
 
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
 app.post('/signin', validateLogin, login);
 app.post('/signup', validateUser, createUser);
 
