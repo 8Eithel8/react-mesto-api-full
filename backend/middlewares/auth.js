@@ -3,7 +3,7 @@ const UnauthorizedError = require('../errors/unauthorized-error');
 
 const message = 'Необходима авторизация';
 
-const { NODE_ENV, SECRET_KEY } = process.env;
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 const { secretKey } = require('../utils/config');
 
@@ -19,7 +19,7 @@ module.exports = (req, res, next) => {
 
   // попытаемся верифицировать токен
   try {
-    payload = jwt.verify(token, NODE_ENV === 'production' ? SECRET_KEY : secretKey);
+    payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : secretKey);
   } catch (err) {
     // отправим ошибку, если не получилось
     throw new UnauthorizedError(message);

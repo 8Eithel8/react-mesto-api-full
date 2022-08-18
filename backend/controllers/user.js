@@ -6,6 +6,10 @@ const BadRequestError = require('../errors/bad-request-error');
 const ConflictError = require('../errors/conflict-error');
 const UnauthorizedError = require('../errors/unauthorized-error');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
+const { secretKey } = require('../utils/config');
+
 const userNotFound = 'Запрашиваемый пользователь не найден.';
 const userInvalidData = 'Переданы некорректные данные при создании пользователя.';
 const userInvalidProfileData = 'Переданы некорректные данные при обновлении профиля.';
@@ -74,7 +78,7 @@ module.exports.login = (req, res, next) => {
       // создадим токен
       const token = jwt.sign(
         { _id: user._id },
-        'some-secret-key',
+        NODE_ENV === 'production' ? JWT_SECRET : secretKey,
         { expiresIn: '7d' },
       );
       res.cookie('jwt', token, {
