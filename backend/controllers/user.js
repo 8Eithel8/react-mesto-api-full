@@ -4,7 +4,6 @@ const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-error');
 const BadRequestError = require('../errors/bad-request-error');
 const ConflictError = require('../errors/conflict-error');
-const UnauthorizedError = require('../errors/unauthorized-error');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -15,7 +14,6 @@ const userInvalidData = 'Переданы некорректные данные 
 const userInvalidProfileData = 'Переданы некорректные данные при обновлении профиля.';
 const userInvalidAvatarData = 'Переданы некорректные данные при обновлении аватара.';
 const userExists = 'Пользователь с таким логином уже зарегистрирован.';
-const userInvalidLoginOrPass = 'Неверный логин или пароль.';
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
@@ -32,7 +30,11 @@ const getUserById = (id, res, next) => User.findById(id)
       name, about, avatar, _id, email,
     },
   ))
-  .catch(next);
+  .catch((err) => {
+    if (err.name === 'ValidationError' || err.name === 'CastError') {
+      next(new BadRequestError(userInvalidProfileData));
+    } else next(err);
+  });
 
 module.exports.getUserMe = (req, res, next) => {
   getUserById(req.user._id, res, next);
@@ -88,9 +90,7 @@ module.exports.login = (req, res, next) => {
       // вернём токен
       res.send({ token });
     })
-    .catch(() => {
-      next(new UnauthorizedError(userInvalidLoginOrPass));
-    });
+    .catch(next);
 };
 
 // обновляем инфо о пользователе

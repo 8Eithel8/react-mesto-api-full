@@ -33,16 +33,17 @@ module.exports.createCard = (req, res, next) => {
 };
 
 module.exports.deleteCard = (req, res, next) => {
-  Card.findByIdAndRemove(req.params.cardId)
+  Card.findById(req.params.cardId)
     .orFail()
-    .then((card) => {
-      const me = req.user._id;
-      if (me === card.owner.toString()) {
-        return res.status(200).send(card);
-      }
-      throw new ForbiddenError(forbidden);
-    })
-    .catch((err) => {
+    .then(
+      (card) => {
+        const me = req.user._id;
+        if (me === card.owner.toString()) {
+          return card.remove().then(() => res.status(200).send(card));
+        }
+        throw new ForbiddenError(forbidden);
+      },
+    ).catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError(cardNonexistentId));
       } else
