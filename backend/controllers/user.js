@@ -31,7 +31,7 @@ const getUserById = (id, res, next) => User.findById(id)
     },
   ))
   .catch((err) => {
-    if (err.name === 'ValidationError' || err.name === 'CastError') {
+    if (err.name === 'CastError') {
       next(new BadRequestError(userInvalidProfileData));
     } else next(err);
   });
