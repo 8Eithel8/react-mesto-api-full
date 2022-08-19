@@ -7,7 +7,9 @@
   
 Cсылки на сайт, размещенный на Яндекс.Облаке:
 
-frontend - https://ulitina.mesto.nomoredomains.sbs
-backend - https://api.ulitina.mesto.nomoredomains.sbs
-IP - 62.84.116.124
+- frontend - https://ulitina.mesto.nomoredomains.sbs
+
+- backend - https://api.ulitina.mesto.nomoredomains.sbs
+
+- IP - 62.84.116.124
 
